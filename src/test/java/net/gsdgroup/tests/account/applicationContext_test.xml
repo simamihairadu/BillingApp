@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context.xsd
+    http://www.springframework.org/schema/tx
+    http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+    <tx:annotation-driven transaction-manager="txManager"/>
+
+    <bean id="txManager" class="org.springframework.orm.hibernate5.HibernateTransactionManager">
+        <property name="sessionFactory" ref="generalSessionFactory"/>
+    </bean>
+
+    <bean id="generalDataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName"    value="com.mysql.cj.jdbc.Driver" />
+        <property name="url"                value="jdbc:mysql://localhost/billing_app_db" />
+        <property name="username"           value="root" />
+        <property name="password"           value="parola" />
+    </bean>
+
+    <!-- general system session factory -->
+    <bean id="generalSessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
+        <property name="dataSource" ref="generalDataSource" />
+        <property name="hibernateProperties">
+            <props>
+                <prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
+                <prop key="hibernate.show_sql">true</prop>
+                <prop key="hibernate.order_inserts">true</prop>
+                <prop key="hibernate.order_updates">true</prop>
+            </props>
+        </property>
+
+        <property name="packagesToScan"
+                  value="net.gsdgroup.billing.entity"/>
+    </bean>
+
+    <bean id="accountController" class="net.gsdgroup.billing.webservice.AccountController"></bean>
+
+    <bean id="billController" class="net.gsdgroup.billing.webservice.BillController"></bean>
+
+    <context:component-scan base-package="net.gsdgroup.billing.dao"/>
+
+    <context:component-scan base-package="net.gsdgroup.billing.business"/>
+
+    <bean id="top" class="org.restlet.ext.spring.SpringComponent">
+        <property name="server">
+            <bean class="org.restlet.ext.spring.SpringServer">
+                <constructor-arg value="http" />
+                <constructor-arg value="8182" />
+            </bean>
+        </property>
+        <property name="defaultTarget" ref="default" />
+    </bean>
+
+    <bean id="default" class="org.restlet.ext.spring.SpringRouter">
+        <property name="attachments">
+            <map>
+                <entry key="/accounts">
+                    <bean class="org.restlet.ext.spring.SpringFinder">
+                        <lookup-method name="create" bean="accountController"></lookup-method>
+                    </bean>
+                </entry>
+                <entry key="/accounts/{accountId}">
+                    <bean class="org.restlet.ext.spring.SpringFinder">
+                        <lookup-method name="create" bean="accountController"></lookup-method>
+                    </bean>
+                </entry>
+                <entry key="/bills">
+                    <bean class="org.restlet.ext.spring.SpringFinder">
+                        <lookup-method name="create" bean="billController"></lookup-method>
+                    </bean>
+                </entry>
+            </map>
+        </property>
+    </bean>
+
+</beans>
