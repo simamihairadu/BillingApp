@@ -601,13 +601,8 @@ public class BillServiceTests {
 
         Bill bill1 = createBillWithNoId();
         bill1.setIssueDate(dateFormat.parse("31/10/1998"));
-        bill1.addBillCharge(createBillChargeWithNoId());
-
         Bill bill2 = createBillWithNoId();
-        bill2.addBillCharge(createBillChargeWithNoId());
-
         Bill bill3 = createBillWithNoId();
-        bill3.addBillCharge(createBillChargeWithNoId());
 
         account.addBill(bill1);
         account.addBill(bill2);
@@ -617,30 +612,9 @@ public class BillServiceTests {
         List<MonthlyAmountDTO> monthlyAmountDTOList = billService.getTotalChargedEachMonth();
 
         assertEquals(20,monthlyAmountDTOList.get(0).getAmount(),0);
-        assertEquals("OCTOBER",monthlyAmountDTOList.get(0).getMonthName());
+        assertEquals("October",monthlyAmountDTOList.get(0).getMonthName());
         assertEquals(40,monthlyAmountDTOList.get(1).getAmount(),0);
-        assertEquals("DECEMBER",monthlyAmountDTOList.get(1).getMonthName());
-    }
-
-    /**
-     * Getting charge amount when there are no charges on any of the bills.
-     * @throws ParseException
-     */
-    @Test
-    public void testGetChargedAmountEachMonth_2() throws ParseException {
-
-        Account account = createAccount();
-
-        Bill bill1 = createBillWithNoId();
-        Bill bill2 = createBillWithNoId();
-
-        account.addBill(bill1);
-        account.addBill(bill2);
-        accountService.addAccount(account);
-
-        List<MonthlyAmountDTO> monthlyAmountDTOList = billService.getTotalChargedEachMonth();
-
-        assertEquals(0, monthlyAmountDTOList.size());
+        assertEquals("December",monthlyAmountDTOList.get(1).getMonthName());
     }
 
     private BillCharge createBillCharge(){
@@ -679,6 +653,9 @@ public class BillServiceTests {
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         Bill bill = new Bill();
+        BillCharge billCharge = createBillChargeWithNoId();
+
+        bill.addBillCharge(billCharge);
         bill.setIssueDate(dateFormat.parse("31/12/1998"));
         bill.setDueDate(dateFormat.parse("31/12/1998"));
 

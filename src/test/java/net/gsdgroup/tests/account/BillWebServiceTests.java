@@ -181,7 +181,6 @@ public class BillWebServiceTests {
         JsonResponseMessage jsonResponseMessage = null;
         Account account = createAccount();
         Bill bill = createBillWithNoId();
-        BillDTO billDTO = null;
 
         account.addBill(bill);
         accountService.addAccount(account);
@@ -634,13 +633,8 @@ public class BillWebServiceTests {
 
         Bill bill1 = createBillWithNoId();
         bill1.setIssueDate(dateFormat.parse("31/10/1998"));
-        bill1.addBillCharge(createBillChargeWithNoId());
-
         Bill bill2 = createBillWithNoId();
-        bill2.addBillCharge(createBillChargeWithNoId());
-
         Bill bill3 = createBillWithNoId();
-        bill3.addBillCharge(createBillChargeWithNoId());
 
         account.addBill(bill1);
         account.addBill(bill2);
@@ -660,9 +654,9 @@ public class BillWebServiceTests {
         }
 
         assertEquals(20,monthlyAmountDTOList.get(0).getAmount(),0);
-        assertEquals("OCTOBER",monthlyAmountDTOList.get(0).getMonthName());
+        assertEquals("October",monthlyAmountDTOList.get(0).getMonthName());
         assertEquals(40,monthlyAmountDTOList.get(1).getAmount(),0);
-        assertEquals("DECEMBER",monthlyAmountDTOList.get(1).getMonthName());
+        assertEquals("December",monthlyAmountDTOList.get(1).getMonthName());
 
     }
 
@@ -698,6 +692,9 @@ public class BillWebServiceTests {
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         Bill bill = new Bill();
+        BillCharge billCharge = createBillChargeWithNoId();
+
+        bill.addBillCharge(billCharge);
         bill.setIssueDate(dateFormat.parse("31/12/1998"));
         bill.setDueDate(dateFormat.parse("31/12/1998"));
 

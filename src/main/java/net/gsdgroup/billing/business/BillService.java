@@ -93,8 +93,9 @@ public class BillService {
     public List<BillDTO> getAllBills(){
 
         List<BillDTO> billDTOList = new ArrayList<>();
-        //TODO refactor getall
-        for (Bill bill : billRepository.getAll(Bill.class)){
+        List<Bill> billList =  billRepository.getAll(Bill.class);
+
+        for (Bill bill : billList) {
             BillDTO billDTO = buildBillDTO(bill);
             billDTOList.add(billDTO);
         }
@@ -105,16 +106,7 @@ public class BillService {
     @Transactional
     public List<MonthlyAmountDTO> getTotalChargedEachMonth(){
 
-        List<MonthlyAmountDTO> monthlyAmountDTOList = new ArrayList<>();
-
-        for (Object[] objects : billRepository.getTotalChargedEachMonth()){
-
-            Double amount = (double)objects[0];
-            String monthName = Month.of((int)objects[1]).name();
-            MonthlyAmountDTO monthlyAmountDTO = new MonthlyAmountDTO(amount, monthName);
-
-            monthlyAmountDTOList.add(monthlyAmountDTO);
-        }
+        List<MonthlyAmountDTO> monthlyAmountDTOList = billRepository.getTotalChargedEachMonth();
 
         return monthlyAmountDTOList;
     }

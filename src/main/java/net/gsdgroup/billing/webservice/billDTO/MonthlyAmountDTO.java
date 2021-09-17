@@ -1,5 +1,11 @@
 package net.gsdgroup.billing.webservice.billDTO;
 
+import javax.persistence.ColumnResult;
+import javax.persistence.ConstructorResult;
+import javax.persistence.Entity;
+import javax.persistence.SqlResultSetMapping;
+
+
 public class MonthlyAmountDTO {
 
     private double amount;

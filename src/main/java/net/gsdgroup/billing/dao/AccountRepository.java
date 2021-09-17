@@ -13,17 +13,25 @@ import java.util.List;
 public class AccountRepository extends AbstractCommonRepository<Account> {
 
     public List<Account> getAccountsWithOverdueBills(){
-        //TODO separate string query
-        return factory.createEntityManager().createQuery("SELECT DISTINCT ac " +
+
+        StringBuilder query = new StringBuilder("SELECT DISTINCT ac " +
                 "FROM Account ac " +
                 "LEFT JOIN FETCH ac.bills b " +
-                "WHERE b.dueDate < CURRENT_DATE",Account.class)
+                "WHERE b.dueDate < CURRENT_DATE");
+
+        return factory.createEntityManager()
+                .createQuery(query.toString(),Account.class)
                 .getResultList();
     }
 
     public Account getById(int id){
 
-        return factory.createEntityManager().createQuery("SELECT ac FROM Account ac LEFT JOIN FETCH ac.bills WHERE ac.id = :id",Account.class)
+        StringBuilder query = new StringBuilder("SELECT ac " +
+                "FROM Account ac " +
+                "LEFT JOIN FETCH ac.bills " +
+                "WHERE ac.id = :id");
+
+        return factory.createEntityManager().createQuery(query.toString(),Account.class)
                     .setParameter("id", id).getSingleResult();
     }
 }

@@ -31,14 +31,16 @@ public class BillController extends ServerResource {
     @Get("json")
     public Representation getBills(){
 
-        if(getRequestAttributes().get("billId")==null){
+        String requestAttribute = (String) getRequestAttributes().get("billId");
+
+        if (requestAttribute == null) {
 
             List<BillDTO> billDTOList = billService.getAllBills();
             return new JacksonRepresentation<List<BillDTO>>(billDTOList);
         }
 
         try {
-            int billId = Integer.parseInt((String) getRequestAttributes().get("billId"));
+            int billId = Integer.parseInt(requestAttribute);
             BillDTO billDTO = billService.getBillById(billId);
             return new JacksonRepresentation<BillDTO>(billDTO);
 
@@ -87,7 +89,8 @@ public class BillController extends ServerResource {
     public Representation deleteBill(){
 
         try{
-            int billId =  Integer.parseInt((String) getRequestAttributes().get("billId"));
+            String requestAttribute = (String) getRequestAttributes().get("billId");
+            int billId =  Integer.parseInt(requestAttribute);
             billService.deleteBill(billId);
             return new JacksonRepresentation<JsonResponseMessage>(new JsonResponseMessage("Operation successful."));
 

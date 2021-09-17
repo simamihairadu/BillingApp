@@ -79,8 +79,9 @@ public class AccountService {
     public List<AccountDTO> getAllAccounts(){
 
         List<AccountDTO> accountDtoList = new ArrayList<>();
-        //TODO extract into variable getAll
-        for (Account account : accountRepository.getAll(Account.class)) {
+        List<Account> accountList = accountRepository.getAll(Account.class);
+
+        for (Account account : accountList) {
             AccountDTO accountDto = buildAccountDto(account);
             accountDtoList.add(accountDto);
         }
@@ -104,8 +105,9 @@ public class AccountService {
     public List<AccountDTO> getAccountsWithOverdueBills(){
 
         List<AccountDTO> accountDtoList = new ArrayList<>();
-        //TODO extract into variable getAll
-        for (Account account: accountRepository.getAccountsWithOverdueBills()) {
+        List<Account> accountList = accountRepository.getAccountsWithOverdueBills();
+
+        for (Account account: accountList) {
             AccountDTO accountDto = buildAccountDto(account);
 
             accountDtoList.add(accountDto);

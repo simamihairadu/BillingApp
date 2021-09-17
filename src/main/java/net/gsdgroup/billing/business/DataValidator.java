@@ -15,12 +15,14 @@ public class DataValidator {
 
         return true;
     }
-//TODO check for bill charges
+
     public boolean validateBillData(Bill bill){
 
         if(bill.getIssueDate() == null ||
         bill.getDueDate() == null ||
-        bill.getAccount() == null){
+        bill.getAccount() == null ||
+        bill.getBillCharges() == null ||
+        bill.getBillCharges().size() == 0){
             return false;
         }
 

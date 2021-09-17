@@ -37,15 +37,16 @@ public class AccountController extends ServerResource {
     @Get("json")
     public Representation getAccounts(){
 
-        //TODO refactor attributes
-        if(getRequestAttributes().get("accountId") == null){
+        String requestAttribute = (String) getRequestAttributes().get("accountId");
+
+        if(requestAttribute == null){
 
             List<AccountDTO> accountDTOList = accountService.getAllAccounts();
             return new JacksonRepresentation<List<AccountDTO>>(accountDTOList);
         }
 
         try{
-            int id = Integer.parseInt((String) getRequestAttributes().get("accountId"));
+            int id = Integer.parseInt(requestAttribute);
             AccountDTO accountDTO = accountService.getAccountById(id);
             return new JacksonRepresentation<AccountDTO>(accountDTO);
 
@@ -72,7 +73,8 @@ public class AccountController extends ServerResource {
     public Representation deleteAccount() {
 
         try{
-            int id = Integer.parseInt((String) getRequestAttributes().get("accountId"));
+            String requestAttribute = (String) getRequestAttributes().get("accountId");
+            int id = Integer.parseInt(requestAttribute);
             accountService.deleteAccount(id);
             return new JacksonRepresentation<JsonResponseMessage>(new JsonResponseMessage("Operation successful."));
 

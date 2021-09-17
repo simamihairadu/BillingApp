@@ -26,7 +26,6 @@ import java.util.List;
 
 import static org.junit.Assert.*;
 
-//TODO Javadoc and comments.
 /**
  * Service test class for the account business component.
  */
@@ -182,7 +181,11 @@ public class AccountServiceTests {
         assertEquals(0,account.getId());
 
         int id = accountService.addAccount(account);
-        //TODO check returned account values
+        AccountDTO accountDTO = accountService.getAccountById(id);
+
+        assertEquals("TestFirstName", accountDTO.getFirstName());
+        assertEquals("TestLastName", accountDTO.getLastName());
+
         assertNotEquals(0, id);
     }
 
